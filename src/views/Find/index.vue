@@ -39,11 +39,45 @@
       <van-dropdown-item title="租金" />
       <van-dropdown-item title="筛选" />
     </van-dropdown-menu>
+
+    <!-- 下拉加载 -->
+    <van-list
+      v-model="loading"
+      finished-text="没有更多了"
+      :finished="finished"
+      @load="onLoad"
+    >
+      <!-- 数据列表 -->
+      <van-card
+        v-for="(item, index) in HousesList"
+        :key="index"
+        :price="item.price"
+        :desc="item.desc"
+        :title="item.title"
+        :thumb="'http://liufusong.top:8080' + item.houseImg"
+      >
+        <template #tags>
+          <van-tag
+            color="#e1f5f8"
+            text-color="#39becd"
+            type="danger"
+            v-for="(item, index) in item.tags"
+            :key="index"
+            >{{ item }}</van-tag
+          >
+        </template>
+        <template #price>
+          <span class="HouseItem_priceNum">{{ item.price }} </span>
+          元/月
+        </template>
+      </van-card>
+    </van-list>
   </div>
 </template>
 
 <script>
 import { getHousesCondition } from '@/api/home'
+import { findHouses } from '@/api/Find'
 export default {
   name: 'Find',
   async created () {
@@ -58,18 +92,37 @@ export default {
     } catch (err) {
       console.log(err)
     }
+    this.findHousesList()
   },
   data () {
     return {
+      HousesList: [],
       conditionList: [],
       toggleShow: false,
       columns: [],
       value: '',
       currentCity: '130500',
-      location: '杭州'
+      location: '杭州',
+      loading: false,
+      finished: false,
+      findHouses: {
+        cityId: 'AREA|88cff55c-aaa4-e2e0',
+        stat: 0,
+        end: 10
+      }
     }
   },
   methods: {
+    async findHousesList () {
+      try {
+        const res = await findHouses(this.findHouses)
+        console.log(res)
+        this.loading = false
+        this.HousesList = res.data.body.list
+      } catch (err) {
+        console.log(err)
+      }
+    },
     getValues () {
       this.$refs.checkbox.toggle()
       console.log(this.$refs.checkbox1.getValues())
@@ -89,6 +142,11 @@ export default {
           this.formateCondition(item.children)
         } else { item.children = [{ label: '' }] }
       })
+    },
+    onLoad () {
+      console.log('开启下拉刷新')
+      this.findHouses.end += 10
+      this.findHousesList()
     }
   },
   computed: {},
@@ -99,6 +157,21 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.van-card__price {
+  color: #fa5741;
+}
+.HouseItem_priceNum {
+  font-size: 16px;
+  color: #fa5741;
+}
+.van-card__title {
+  font-size: 15px;
+  color: #394043;
+}
+.van-card__desc {
+  font-size: 12px;
+  color: #afb2b3;
+}
 // 联级选择器
 /deep/.van-picker__toolbar {
   border-top: 1px solid #e9e9e9;

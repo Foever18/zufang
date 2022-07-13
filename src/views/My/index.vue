@@ -15,7 +15,7 @@
     <div class="My_info__eOYeg">
       <div class="My_myIcon__3cKIV">
         <img
-          v-if="this.user"
+          v-if="this.user && userInfo"
           class="My_avatar__2Fbh7"
           :src="'http://liufusong.top:8080' + userBackground"
           alt="icon"
@@ -32,7 +32,7 @@
           {{ this.user && userInfo ? userInfo.nickname : "游客" }}
         </div>
         <div class="My_edit__3wqlv">
-          <van-button type="primary" v-if="this.user" @click="logOut"
+          <van-button type="primary" v-if="this.user && userInfo" @click="logOut"
             >退出</van-button
           >
           <van-button type="primary" to="login" v-else>去登录</van-button>
@@ -94,7 +94,6 @@ export default {
   data () {
     return {
       userInfo: ''
-
     }
   },
   methods: {

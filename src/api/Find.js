@@ -68,3 +68,10 @@ export const addHouse = ({ title, description, houseImg, oriented, supporting, p
     }
   })
 }
+
+export const findHouses = (params) => {
+  return request({
+    url: 'houses',
+    params
+  })
+}
