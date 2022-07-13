@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const myArr = [
+        {
+          id: 1,
+          Name: '张三',
+        },
+        {
+          id: 2,
+          Name: '李四',
+        },
+        {
+          id: 3,
+          Name: '王五',
+        },
+        {
+          id: 4,
+          Name: '赵六',
+        },
+      ]
+      var i0 = myArr.findIndex((value) => value.Name == '赵六')
+      console.log(i0)
+      var i1 = myArr.findIndex((value) => value.id == 4)
+      console.log(i1)
+      // var i2 = myArr.findIndex((value) => value.id == 3)
+      // console.log(i2)
+      // var i3 = myArr.findIndex((value) => value.id == 4)
+      // console.log(i3)
+      // var i4 = myArr.findIndex((value) => value.id == 5)
+      // console.log(i4)
+    </script>
+  </body>
+</html>
